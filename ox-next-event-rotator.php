@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: OX Next Event Rotator
- * Plugin URI: https://github.com/ox-next-event-rotator
+ * Plugin URI: https://github.com/macdudeuk2/ox-next-event-rotator
  * Description: Automatically rotates the "next-event" tag from past events to the next upcoming event. Works with The Events Calendar plugin.
  * Version: 1.0.1
  * Requires at least: 5.0
