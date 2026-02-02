@@ -175,34 +175,37 @@ class OX_NER_Rotator {
     }
 
     /**
-     * Get the next upcoming event (excluding any with the next-event tag)
+     * Get the next upcoming event
+     *
+     * Uses direct database query to avoid TEC query filters and ensure
+     * compatibility with SQLite.
      *
      * @return WP_Post|null The next event post or null if none found
      */
     public function get_next_upcoming_event(): ?WP_Post {
-        $today = current_time('Y-m-d');
+        global $wpdb;
 
-        $args = [
-            'post_type'      => 'tribe_events',
-            'post_status'    => 'publish',
-            'posts_per_page' => 1,
-            'orderby'        => 'meta_value',
-            'meta_key'       => '_EventStartDate',
-            'order'          => 'ASC',
-            'meta_query'     => [
-                [
-                    'key'     => '_EventStartDate',
-                    'value'   => $today,
-                    'compare' => '>=',
-                    'type'    => 'DATE',
-                ],
-            ],
-        ];
+        // Use full datetime format to match how TEC stores dates
+        $now = current_time('Y-m-d H:i:s');
 
-        $query = new WP_Query($args);
+        $result = $wpdb->get_row(
+            $wpdb->prepare(
+                "SELECT p.ID
+                FROM {$wpdb->posts} p
+                INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id AND pm.meta_key = '_EventStartDate'
+                WHERE p.post_type = %s
+                AND p.post_status = %s
+                AND pm.meta_value >= %s
+                ORDER BY pm.meta_value ASC
+                LIMIT 1",
+                'tribe_events',
+                'publish',
+                $now
+            )
+        );
 
-        if ($query->have_posts()) {
-            return $query->posts[0];
+        if ($result) {
+            return get_post($result->ID);
         }
 
         return null;
@@ -211,43 +214,45 @@ class OX_NER_Rotator {
     /**
      * Get a list of upcoming events for display
      *
+     * Uses direct database query to avoid TEC query filters and ensure
+     * compatibility with SQLite.
+     *
      * @param int $limit Number of events to retrieve
      * @return array Array of event data
      */
     public function get_upcoming_events_list(int $limit = 5): array {
-        $today = current_time('Y-m-d');
+        global $wpdb;
+
+        $now = current_time('Y-m-d H:i:s');
         $events = [];
 
-        $args = [
-            'post_type'      => 'tribe_events',
-            'post_status'    => 'publish',
-            'posts_per_page' => $limit,
-            'orderby'        => 'meta_value',
-            'meta_key'       => '_EventStartDate',
-            'order'          => 'ASC',
-            'meta_query'     => [
-                [
-                    'key'     => '_EventStartDate',
-                    'value'   => $today,
-                    'compare' => '>=',
-                    'type'    => 'DATE',
-                ],
-            ],
-        ];
+        $results = $wpdb->get_results(
+            $wpdb->prepare(
+                "SELECT p.ID, p.post_title, pm.meta_value as start_date
+                FROM {$wpdb->posts} p
+                INNER JOIN {$wpdb->postmeta} pm ON p.ID = pm.post_id AND pm.meta_key = '_EventStartDate'
+                WHERE p.post_type = %s
+                AND p.post_status = %s
+                AND pm.meta_value >= %s
+                ORDER BY pm.meta_value ASC
+                LIMIT %d",
+                'tribe_events',
+                'publish',
+                $now,
+                $limit
+            )
+        );
 
-        $query = new WP_Query($args);
-
-        if ($query->have_posts()) {
-            foreach ($query->posts as $post) {
-                $start_date = get_post_meta($post->ID, '_EventStartDate', true);
-                $has_tag = has_tag($this->tag_slug, $post->ID);
+        if ($results) {
+            foreach ($results as $row) {
+                $has_tag = has_tag($this->tag_slug, $row->ID);
 
                 $events[] = [
-                    'id'         => $post->ID,
-                    'title'      => $post->post_title,
-                    'start_date' => $start_date ? substr($start_date, 0, 10) : 'N/A',
+                    'id'         => $row->ID,
+                    'title'      => $row->post_title,
+                    'start_date' => $row->start_date ? substr($row->start_date, 0, 10) : 'N/A',
                     'has_tag'    => $has_tag,
-                    'edit_url'   => get_edit_post_link($post->ID),
+                    'edit_url'   => get_edit_post_link($row->ID),
                 ];
             }
         }
