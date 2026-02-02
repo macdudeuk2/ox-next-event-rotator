@@ -81,6 +81,11 @@ No, by design the plugin simply rotates to the chronologically next event when t
 
 ## Changelog
 
+### 1.0.1
+- Fixed dependency check to work correctly at plugins_loaded hook
+- Fixed event ordering to use direct database queries for SQLite compatibility
+- Improved date comparison using full datetime format
+
 ### 1.0.0
 - Initial release
 - Daily automatic rotation via WP-Cron

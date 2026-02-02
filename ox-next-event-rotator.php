@@ -3,7 +3,7 @@
  * Plugin Name: OX Next Event Rotator
  * Plugin URI: https://github.com/ox-next-event-rotator
  * Description: Automatically rotates the "next-event" tag from past events to the next upcoming event. Works with The Events Calendar plugin.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Requires at least: 5.0
  * Tested up to: 6.4
  * Requires PHP: 7.4
@@ -16,7 +16,7 @@
  * Network: false
  *
  * @package OXNextEventRotator
- * @version 1.0.0
+ * @version 1.0.1
  * @author Andy McLeod
  * @license GPL v2 or later
  */
@@ -29,7 +29,7 @@ if (!defined('ABSPATH')) {
 }
 
 // Define plugin constants
-define('OX_NER_VERSION', '1.0.0');
+define('OX_NER_VERSION', '1.0.1');
 define('OX_NER_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('OX_NER_PLUGIN_URL', plugin_dir_url(__FILE__));
 define('OX_NER_PLUGIN_BASENAME', plugin_basename(__FILE__));
@@ -71,8 +71,23 @@ function ox_ner_check_updates(): void {
             ox_ner_update_to_1_0_0();
         }
 
+        if (version_compare($current_version, '1.0.1', '<')) {
+            ox_ner_update_to_1_0_1();
+        }
+
         update_option(OX_NER_VERSION_OPTION, OX_NER_VERSION);
     }
+}
+
+/**
+ * Update to version 1.0.1
+ */
+function ox_ner_update_to_1_0_1(): void {
+    // No database changes needed
+    // This version includes:
+    // - Fixed dependency check for plugins_loaded timing
+    // - Fixed event ordering with direct database queries
+    // - SQLite compatibility improvements
 }
 
 /**
