@@ -47,7 +47,8 @@ define('OX_NER_CRON_HOOK', 'ox_next_event_rotator_daily_check');
  * @return bool
  */
 function ox_ner_check_dependencies(): bool {
-    if (!post_type_exists('tribe_events')) {
+    // Check if The Events Calendar class exists (available at plugins_loaded)
+    if (!class_exists('Tribe__Events__Main')) {
         add_action('admin_notices', function () {
             echo '<div class="notice notice-error"><p>';
             echo esc_html__('OX Next Event Rotator requires The Events Calendar plugin to be installed and activated.', 'ox-next-event-rotator');
