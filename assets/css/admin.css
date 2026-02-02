@@ -1,0 +1,181 @@
+/**
+ * OX Next Event Rotator - Admin Styles
+ *
+ * @package OXNextEventRotator
+ * @since 1.0.0
+ */
+
+/* Grid Layout */
+.ox-ner-admin .ox-ner-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 20px;
+    margin-bottom: 20px;
+}
+
+/* Cards */
+.ox-ner-card {
+    background: #fff;
+    border: 1px solid #c3c4c7;
+    border-radius: 4px;
+    padding: 20px;
+    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.04);
+}
+
+.ox-ner-card h2 {
+    margin-top: 0;
+    padding-bottom: 10px;
+    border-bottom: 1px solid #c3c4c7;
+}
+
+.ox-ner-full-width {
+    grid-column: 1 / -1;
+    margin-bottom: 20px;
+}
+
+/* Status Table */
+.ox-ner-status-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+.ox-ner-status-table th {
+    text-align: left;
+    padding: 8px 10px 8px 0;
+    width: 200px;
+    vertical-align: top;
+    font-weight: 600;
+}
+
+.ox-ner-status-table td {
+    padding: 8px 0;
+    vertical-align: top;
+}
+
+.ox-ner-status-table code {
+    background: #f0f0f1;
+    padding: 2px 6px;
+    border-radius: 3px;
+}
+
+/* Status Labels */
+.ox-ner-past {
+    color: #b32d2e;
+    font-weight: 600;
+}
+
+.ox-ner-tagged {
+    color: #00a32a;
+    font-weight: 600;
+}
+
+.ox-ner-no-tag {
+    color: #787c82;
+}
+
+.ox-ner-warning {
+    color: #996800;
+    font-style: italic;
+}
+
+.ox-ner-none {
+    color: #787c82;
+    font-style: italic;
+}
+
+/* Action Labels */
+.ox-ner-action {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 3px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: uppercase;
+}
+
+.ox-ner-action-rotated {
+    background: #d4edda;
+    color: #155724;
+}
+
+.ox-ner-action-assigned {
+    background: #cce5ff;
+    color: #004085;
+}
+
+.ox-ner-action-no_change {
+    background: #f0f0f1;
+    color: #50575e;
+}
+
+.ox-ner-action-removed_only {
+    background: #fff3cd;
+    color: #856404;
+}
+
+.ox-ner-action-no_events {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+.ox-ner-action-none {
+    background: #f8d7da;
+    color: #721c24;
+}
+
+/* Forms */
+.ox-ner-run-form {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #c3c4c7;
+}
+
+.ox-ner-run-form .description {
+    margin-top: 8px;
+    color: #646970;
+}
+
+.ox-ner-clear-log-form {
+    margin-top: 15px;
+}
+
+/* Tables */
+.ox-ner-card .wp-list-table {
+    margin-top: 10px;
+}
+
+.ox-ner-card .wp-list-table th,
+.ox-ner-card .wp-list-table td {
+    padding: 10px 8px;
+}
+
+/* How It Works List */
+.ox-ner-card ol {
+    margin: 0 0 15px 20px;
+    padding: 0;
+}
+
+.ox-ner-card ol li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+/* Responsive */
+@media screen and (max-width: 782px) {
+    .ox-ner-admin .ox-ner-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .ox-ner-status-table th {
+        width: auto;
+        display: block;
+        padding-bottom: 0;
+    }
+
+    .ox-ner-status-table td {
+        display: block;
+        padding-top: 4px;
+        padding-bottom: 12px;
+    }
+}
